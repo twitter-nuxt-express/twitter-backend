@@ -1,13 +1,25 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid"); // Импортируем функцию для генерации UUID
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
 const users = [
   {
     id: 1,
     name: "Test",
     age: 25,
+  },
+  {
+    id: 2,
+    name: "Test 2",
+    age: 19,
+  },
+  {
+    id: 3,
+    name: "Test 3",
+    age: 30,
   },
 ];
 

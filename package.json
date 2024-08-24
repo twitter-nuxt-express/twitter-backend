@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Twitch-nuxt-express/twitch-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "uuid": "^10.0.0"
   },
