@@ -9,17 +9,17 @@ const users = [
   {
     id: 1,
     name: "Test",
-    age: 25,
+    comment: "Comment 1",
   },
   {
     id: 2,
     name: "Test 2",
-    age: 19,
+    comment: "Comment 2",
   },
   {
     id: 3,
     name: "Test 3",
-    age: 30,
+    comment: "Comment 3",
   },
 ];
 
@@ -31,13 +31,17 @@ const getHandler = (req, res) => {
 };
 
 const postHandler = (req, res) => {
-  const id = uuidv4(); // Генерируем UUID
-  res.json({ id, data: req.body });
-  users.push({ id, ...req.body });
+  const id = uuidv4();
+  req.body.id = id;
+  users.push(req.body);
+  res.json(req.body);
 };
+
+const getByIdHandler = (req, res) => {};
 
 app.get("/", getHandler);
 app.post("/", postHandler);
+app.get("/id", getByIdHandler);
 
 app.listen(5000, () => {
   console.log("Server was started on port 5000");
