@@ -7,41 +7,66 @@ app.use(cors());
 
 const users = [
   {
+    userId: "1",
+    login: "Dimash",
+    password: "123",
+    avatar: "",
+  },
+];
+
+const posts = [
+  {
     id: 1,
-    name: "Test",
-    comment: "Comment 1",
+    name: "Dimash",
+    content: "Практикую бекенд",
+    userId: 1,
   },
   {
     id: 2,
-    name: "Test 2",
-    comment: "Comment 2",
+    name: "Adil",
+    content: "Читаю книгу",
   },
   {
     id: 3,
-    name: "Test 3",
-    comment: "Comment 3",
+    name: "Alish",
+    content: "Работаю в Самгау",
+  },
+  {
+    id: 1,
+    name: "Dimash",
+    content: "Плаваю в бассейне",
   },
 ];
 
 app.use(express.json());
+console.log(12);
 
 const getHandler = (req, res) => {
-  console.log("Handler");
-  res.json(users);
+  res.json(posts);
 };
 
 const postHandler = (req, res) => {
   const id = uuidv4();
   req.body.id = id;
-  users.push(req.body);
+  posts.unshift(req.body);
   res.json(req.body);
 };
 
-const getByIdHandler = (req, res) => {};
+const getByIdHandler = (req, res) => {
+  const filteredPosts = posts.filter(user => {
+    return user.id === 1;
+  });
+
+  const singleUserPosts = filteredPosts.map(filteredPost => {
+    return filteredPost.content;
+  });
+
+  res.json(singleUserPosts);
+};
 
 app.get("/", getHandler);
 app.post("/", postHandler);
-app.get("/id", getByIdHandler);
+app.get("/1", getByIdHandler);
 
 app.listen(5000, () => {
   console.log("Server was started on port 5000");
