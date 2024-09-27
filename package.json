@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app",
-    "dev": "nodemon app"
-  },
+  "start": "ts-node src/index.ts",
+  "dev": "nodemon --watch src --exec ts-node src/index.ts"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Twitch-nuxt-express/twitch-backend.git"
@@ -21,9 +21,18 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "pg": "^8.13.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.4",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
   }
 }
