@@ -3,12 +3,14 @@ import cors from "cors";
 import { AppDataSource } from "./data-source";
 import userRouter from "./routes/userRouter";
 import postRouter from "./routes/postRouter";
+import authRouter from "./routes/authRouter";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(postRouter);
+app.use("/auth", authRouter);
 
 // Инициализация подключения к базе данных
 AppDataSource.initialize()
@@ -19,6 +21,6 @@ AppDataSource.initialize()
       console.log("Server is running on port 5000");
     });
   })
-  .catch(error =>
+  .catch((error) =>
     console.log("Error during Data Source initialization", error),
   );

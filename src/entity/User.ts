@@ -13,4 +13,7 @@ export class User {
 
   @Column({ nullable: true })
   avatar?: string;
+
+  @Column("text", { array: true, nullable: true })
+  roles?: string[];
 }

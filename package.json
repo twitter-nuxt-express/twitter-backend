@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "ts-node src/index.ts",
-  "dev": "nodemon --watch src --exec ts-node src/index.ts"
-},
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon --watch src --exec ts-node src/index.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Twitch-nuxt-express/twitch-backend.git"
@@ -19,16 +19,21 @@
   },
   "homepage": "https://github.com/Twitch-nuxt-express/twitch-backend#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.3",
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^22.7.4",
     "@types/uuid": "^10.0.0",
     "nodemon": "^3.1.4",

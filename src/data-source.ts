@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { Post } from "./entity/Post";
+import { Role } from "./entity/Role";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: "twitter", // замени на название твоей базы данных
   synchronize: true,
   logging: true,
-  entities: [User, Post],
+  entities: [User, Post, Role],
   subscribers: [],
   migrations: [],
 });
