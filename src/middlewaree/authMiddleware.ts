@@ -3,11 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { secret } from "../config";
 
-export default function (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): void {
+export default function (req: Request, res: Response, next: NextFunction) {
   if (req.method === "OPTIONS") {
     return next();
   }

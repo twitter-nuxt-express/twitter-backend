@@ -24,6 +24,16 @@ class userController {
       res.status(500).json(error);
     }
   }
+
+  async getById(req: Request, res: Response) {
+    try {
+      const userRepository = AppDataSource.getRepository(User);
+      const user = await userRepository.findOneBy({ id: +req.params.id }); // Получаем id из URL
+    res.json(user);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 }
 
 export default new userController();

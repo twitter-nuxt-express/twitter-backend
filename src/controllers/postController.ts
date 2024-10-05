@@ -18,7 +18,7 @@ class postController {
     try {
       const postRepository = AppDataSource.getRepository(Post);
       const posts = await postRepository.find({ relations: ["user"] });
-      res.json(posts);
+      res.json(posts.reverse());
     } catch (error) {
       res.status(500).json(error);
     }

@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(postRouter);
-app.use("/auth", authRouter);
+app.use(authRouter);
 
 // Инициализация подключения к базе данных
 AppDataSource.initialize()

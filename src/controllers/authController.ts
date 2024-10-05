@@ -36,9 +36,18 @@ class AuthController {
       }
 
       const hashPassword = bcrypt.hashSync(password, 7);
-      const userRole = await roleRepository.findOne({
+      let userRole = await roleRepository.findOne({
         where: { value: "USER" },
       });
+
+      // Если роль не найдена, создаем новую
+      if (!userRole) {
+        userRole = roleRepository.create({
+          value: "USER",
+        });
+        await roleRepository.save(userRole); // Сохраняем новую роль в базе данных
+      }
+
       if (!userRole) {
         return res.status(500).json({ message: "Роль не найдена" });
       }
@@ -82,7 +91,7 @@ class AuthController {
         user.id?.toString() || "",
         user.roles || [],
       );
-      return res.json({ token });
+      return res.json({ token, userId: user.id });
     } catch (e) {
       console.error(e);
       return res.status(400).json({ message: "Ошибка при входе в систему" });
