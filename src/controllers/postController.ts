@@ -55,6 +55,52 @@ class postController {
       res.status(500).json(error);
     }
   }
+
+  async getUserPostById(req: Request, res: Response) {
+    try {
+      const postRepository = AppDataSource.getRepository(Post);
+      const userPost = await postRepository.findOne({
+        where: {
+          id: +req.params.postId, // ID поста
+          user: { id: +req.params.userId }, // Убедитесь, что пост принадлежит пользователю
+        },
+        relations: ["user"],
+      });
+
+      if (!userPost) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+
+      res.json(userPost);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async editUserPost(req: Request, res: Response) {
+    try {
+      const postRepository = AppDataSource.getRepository(Post);
+
+      const userPost = await postRepository.update(
+        { id: +req.params.postId },
+        { content: req.body.content },
+      );
+
+      res.json(userPost);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async deleteUserPost(req: Request, res: Response) {
+    try {
+      const postRepository = AppDataSource.getRepository(Post);
+      const userPost = await postRepository.delete({ id: +req.params.postId });
+      res.json(userPost);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 }
 
 export default new postController();
