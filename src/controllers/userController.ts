@@ -4,17 +4,6 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
 
 class userController {
-  async create(req: Request, res: Response) {
-    try {
-      const userRepository = AppDataSource.getRepository(User);
-      const newUser = userRepository.create(req.body);
-      await userRepository.save(newUser);
-      res.json(newUser);
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  }
-
   async getAll(req: Request, res: Response) {
     try {
       const userRepository = AppDataSource.getRepository(User);
@@ -29,7 +18,7 @@ class userController {
     try {
       const userRepository = AppDataSource.getRepository(User);
       const user = await userRepository.findOneBy({ id: +req.params.id }); // Получаем id из URL
-    res.json(user);
+      res.json(user);
     } catch (error) {
       res.status(500).json(error);
     }

@@ -6,13 +6,13 @@ export class User {
   id?: number;
 
   @Column()
-  login?: string;
+  login!: string;
 
   @Column()
-  password?: string;
+  password!: string;
 
   @Column({ nullable: true })
-  avatar?: string;
+  avatar!: string;
 
   @Column("text", { array: true, nullable: true })
   roles?: string[];

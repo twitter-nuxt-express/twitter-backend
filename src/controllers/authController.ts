@@ -5,6 +5,7 @@ import { Role } from "../entity/Role";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
+import multer from "multer";
 import { secret } from "../config";
 
 const generateAccessToken = (id: string, roles: string[]): string => {
@@ -12,7 +13,20 @@ const generateAccessToken = (id: string, roles: string[]): string => {
   return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
 
+// Настройка multer для загрузки аватаров
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Папка, куда будут загружаться файлы
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // Уникальное имя для файла
+  },
+});
+
+const upload = multer({ storage });
+
 class AuthController {
+  // Регистрация пользователя с загрузкой аватара
   async registration(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
@@ -24,6 +38,7 @@ class AuthController {
       }
 
       const { login, password } = req.body;
+      const avatar = req.file?.filename; // Получаем имя загруженного файла
 
       const userRepository = AppDataSource.getRepository(User);
       const roleRepository = AppDataSource.getRepository(Role);
@@ -36,16 +51,12 @@ class AuthController {
       }
 
       const hashPassword = bcrypt.hashSync(password, 7);
-      let userRole = await roleRepository.findOne({
-        where: { value: "USER" },
-      });
+      let userRole = await roleRepository.findOne({ where: { value: "USER" } });
 
       // Если роль не найдена, создаем новую
       if (!userRole) {
-        userRole = roleRepository.create({
-          value: "USER",
-        });
-        await roleRepository.save(userRole); // Сохраняем новую роль в базе данных
+        userRole = roleRepository.create({ value: "USER" });
+        await roleRepository.save(userRole);
       }
 
       if (!userRole) {
@@ -55,6 +66,7 @@ class AuthController {
       const user = userRepository.create({
         login,
         password: hashPassword,
+        avatar, // Сохраняем имя файла аватара
         roles: [userRole.value],
       });
 
@@ -66,6 +78,7 @@ class AuthController {
     }
   }
 
+  // Вход пользователя
   async login(req: Request, res: Response): Promise<Response> {
     try {
       const { login, password } = req.body;
@@ -76,10 +89,6 @@ class AuthController {
         return res
           .status(400)
           .json({ message: `Пользователь ${login} не найден` });
-      }
-
-      if (!user.password) {
-        return res.status(400).json({ message: "Пароль не найден" });
       }
 
       const validPassword = bcrypt.compareSync(password, user.password);
@@ -98,6 +107,7 @@ class AuthController {
     }
   }
 
+  // Получение списка пользователей
   async getUsers(req: Request, res: Response): Promise<Response> {
     try {
       const userRepository = AppDataSource.getRepository(User);
@@ -112,4 +122,5 @@ class AuthController {
   }
 }
 
-export default new AuthController();
+export const authController = new AuthController();
+export const uploadMiddleware = upload.single("avatar"); // Middleware для загрузки одного файла
